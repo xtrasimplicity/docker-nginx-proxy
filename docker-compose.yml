@@ -5,7 +5,7 @@ services:
       image: httpd:latest
 
     proxy:
-      image: xtrasimplicity/nginx_proxy:dev
+      image: xtrasimplicity/nginx-proxy:latest
       build: .
       depends_on:
         - app
