@@ -62,6 +62,27 @@ services:
        - 443:443
 ```
 
+### Defining multiple virtual hosts
+If you would like to define multiple virtual hosts, you will need to create a YML file and mount it to `/config/vhosts.yml`. Please note: If you do this, *ALL* vhost-related environment variables will be ignored.
+
+```yaml
+---
+vhosts:
+  - server_name: my-first-app.com
+    proxied_app_url: http://app1
+    ssl_cert_filename: app1-cert.pem
+    ssl_cert_key_filename: app1-key.pem
+    http_port: # Optional, Defaults to 80
+    https_port: # Optional, Defaults to 443
+  
+  - server_name: my-second-app.com
+    proxied_app_url: http://app2
+    ssl_cert_filename: app2-cert.pem
+    ssl_cert_key_filename: app2-key.pem
+    http_port: # Optional, Defaults to 80
+    https_port: # Optional, Defaults to 443
+```
+
 ## License
 
 The image is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
