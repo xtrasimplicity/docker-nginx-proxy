@@ -1,0 +1,8 @@
+---
+vhosts:
+  - server_name: <%= ENV['SERVER_NAME'] %>
+    proxied_app_url: <%= ENV['PROXIED_APP_URL'] %>
+    ssl_cert_filename: <%= ENV['SSL_CERT_FILENAME'] %>
+    ssl_cert_key_filename: <%= ENV['SSL_CERT_KEY_FILENAME'] %>
+    http_port: <%= ENV['HTTP_PORT'] %>
+    https_port: <%= ENV['HTTPS_PORT'] %>
