@@ -19,6 +19,7 @@ yaml_content['vhosts'].each do |vhost|
   http_port = vhost['http_port'] || 80
   https_port = vhost['https_port'] || 443
   dh_param_filename = 'dhparam.pem'
+  additional_nginx_directives = vhost['nginx_directives'].to_a.map { |k,v| "#{k} #{v}\;" }
 
   abort 'ERROR: A vhost must contain a `server_name`. Please check your configuration.' if server_name.nil?
   abort "ERROR: vhost `#{server_name}` does not define a `proxied_app_url`. Please check your configuration." if proxied_app_url.nil?
@@ -38,6 +39,8 @@ yaml_content['vhosts'].each do |vhost|
   nginx_config_content.gsub!('{SSL_CERT_KEY_FILENAME}', ssl_cert_key_filename)
   nginx_config_content.gsub!('{HTTP_PORT}', http_port.to_s)
   nginx_config_content.gsub!('{HTTPS_PORT}', https_port.to_s)
+
+  nginx_config_content.gsub!('{ADDITIONAL_NGINX_DIRECTIVES}', additional_nginx_directives.join("\n"))
 
   File.write("/etc/nginx/conf.d/#{server_name}.conf", nginx_config_content)
 end

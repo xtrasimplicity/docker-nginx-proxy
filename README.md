@@ -75,6 +75,8 @@ vhosts:
     ssl_cert_key_filename: app1-key.pem
     http_port: # Optional, Defaults to 80
     https_port: # Optional, Defaults to 443
+    nginx_directives: # Optional, additional NGinx directives, in `Key: value` format.
+      client_max_body_size: 0
   
   - server_name: my-second-app.com
     proxied_app_url: http://app2
@@ -82,6 +84,8 @@ vhosts:
     ssl_cert_key_filename: app2-key.pem
     http_port: # Optional, Defaults to 80
     https_port: # Optional, Defaults to 443
+    nginx_directives: # Optional, additional NGinx directives, in `Key: value` format.
+      client_max_body_size: 0
 ```
 
 ## License
