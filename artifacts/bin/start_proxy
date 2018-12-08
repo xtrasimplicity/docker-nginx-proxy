@@ -19,7 +19,13 @@ yaml_content['vhosts'].each do |vhost|
   http_port = vhost['http_port'] || 80
   https_port = vhost['https_port'] || 443
   dh_param_filename = 'dhparam.pem'
-  additional_nginx_directives = vhost['nginx_directives'].to_a.map { |k,v| "#{k} #{v}\;" }
+  additional_nginx_directives = vhost['nginx_directives'].to_a.map do |key, value|
+    if value.is_a? Array
+      value.map { |val| "#{key} #{val};" }.join("\n")
+    else
+      "#{key} #{value};"
+    end
+  end
 
   abort 'ERROR: A vhost must contain a `server_name`. Please check your configuration.' if server_name.nil?
   abort "ERROR: vhost `#{server_name}` does not define a `proxied_app_url`. Please check your configuration." if proxied_app_url.nil?
