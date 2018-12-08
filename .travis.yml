@@ -3,5 +3,5 @@ services:
 
 script:
   - touch config.env
-  - docker-compose build .
+  - docker-compose build
   - cd test && docker-compose build && docker-compose up
