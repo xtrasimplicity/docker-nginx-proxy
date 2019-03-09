@@ -30,7 +30,18 @@ yaml_content['vhosts'].each do |vhost|
   abort 'ERROR: A vhost must contain a `server_name`. Please check your configuration.' if server_name.nil?
   abort "ERROR: vhost `#{server_name}` does not define a `proxied_app_url`. Please check your configuration." if proxied_app_url.nil?
 
-  [ssl_cert_filename, ssl_cert_key_filename, dh_param_filename].each do |file|
+  dh_parameter_file = File.join(ssl_certificate_base_path, dh_param_filename)
+
+  unless File.exists? dh_parameter_file
+    puts <<~EOF
+      WARNING: A DH Parameter file does not exist. Please wait whilst we automatically generate one for you.
+      Hint: Speed up start-up in the future by generating one yourself and mounting it as #{dh_parameter_file}.
+    EOF
+
+    system("openssl dhparam -out #{dh_parameter_file} 4096 2>&1")
+  end
+
+  [ssl_cert_filename, ssl_cert_key_filename].each do |file|
     absolute_path = File.join(ssl_certificate_base_path, file)
     
     abort "ERROR: #{absolute_path} does not exist. Please check your configuration." unless File.exists?(absolute_path)
