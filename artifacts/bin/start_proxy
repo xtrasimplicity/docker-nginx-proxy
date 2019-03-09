@@ -38,7 +38,7 @@ yaml_content['vhosts'].each do |vhost|
       Hint: Speed up start-up in the future by generating one yourself and mounting it as #{dh_parameter_file}.
     EOF
 
-    system("openssl dhparam -out #{dh_parameter_file} 4096")
+    system("openssl dhparam -out #{dh_parameter_file} 4096 2>&1")
   end
 
   [ssl_cert_filename, ssl_cert_key_filename].each do |file|
