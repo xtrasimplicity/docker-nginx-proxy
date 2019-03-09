@@ -1,6 +1,9 @@
 FROM xtrasimplicity/nginx-proxy:latest
 
-RUN apt-get install -y autoconf make gcc ruby-dev
+RUN apt-get update && \ 
+    apt-get install -y autoconf make gcc ruby-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt clean
 
 WORKDIR /tests
 
