@@ -77,7 +77,8 @@ vhosts:
     https_port: # Optional, Defaults to 443
     nginx_directives: # Optional, additional NGinx directives, in `Key: value` format.
       client_max_body_size: 0
-  
+    headers_to_exclude: # Optional, an array of headers to be excluded from the generated NGinx config file. Note: Headers added using `nginx_directives` are not excluded.
+ 
   - server_name: my-second-app.com
     proxied_app_url: http://app2
     ssl_cert_filename: app2-cert.pem
