@@ -16,3 +16,9 @@ Then("the file {string} should contain:") do |path, expected_content|
 
   expect(actual_content).to include(expected_content)
 end
+
+Then("the file {string} should not contain:") do |path, expected_content|
+  actual_content = File.read(path)
+
+  expect(actual_content).not_to include(expected_content)
+end

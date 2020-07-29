@@ -26,6 +26,7 @@ yaml_content['vhosts'].each do |vhost|
       "#{key} #{value};"
     end
   end
+  headers_to_exclude = vhost['headers_to_exclude'].to_a
 
   abort 'ERROR: A vhost must contain a `server_name`. Please check your configuration.' if server_name.nil?
   abort "ERROR: vhost `#{server_name}` does not define a `proxied_app_url`. Please check your configuration." if proxied_app_url.nil?
@@ -56,6 +57,10 @@ yaml_content['vhosts'].each do |vhost|
   nginx_config_content.gsub!('{SSL_CERT_KEY_FILENAME}', ssl_cert_key_filename)
   nginx_config_content.gsub!('{HTTP_PORT}', http_port.to_s)
   nginx_config_content.gsub!('{HTTPS_PORT}', https_port.to_s)
+
+  headers_to_exclude.each do |header|
+    nginx_config_content.gsub!(/add_header #{header} .*/i, '')
+  end
 
   nginx_config_content.gsub!('{ADDITIONAL_NGINX_DIRECTIVES}', additional_nginx_directives.join("\n"))
 
