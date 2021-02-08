@@ -9,6 +9,7 @@ server {
 server {
   listen {HTTPS_PORT} ssl;
   listen [::]:{HTTPS_PORT} ssl;
+  {ADDITIONAL_PORTS}
   server_name {SERVER_NAME};
 
   error_log /dev/stdout info;
