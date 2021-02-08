@@ -17,6 +17,16 @@ Then("the file {string} should contain:") do |path, expected_content|
   expect(actual_content).to include(expected_content)
 end
 
+Then("the file {string} should contain the following lines:") do |path, expected_lines_str|
+  actual_content = File.read(path)
+
+  expected_lines = expected_lines_str.split("\n")
+
+  expected_lines.each do |line|
+    expect(actual_content).to include(line.gsub('\s+', ''))
+  end
+end
+
 Then("the file {string} should not contain:") do |path, expected_content|
   actual_content = File.read(path)
 

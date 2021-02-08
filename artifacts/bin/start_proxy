@@ -18,6 +18,14 @@ yaml_content['vhosts'].each do |vhost|
   ssl_cert_key_filename = vhost['ssl_cert_key_filename'] || 'key.pem'
   http_port = vhost['http_port'] || 80
   https_port = vhost['https_port'] || 443
+  
+  additional_listen_directives = vhost['additional_ports'].to_a.map do |port|
+    <<~EOF
+      listen #{port};
+      listen [::]:#{port};
+    EOF
+  end.join("\n")
+
   dh_param_filename = 'dhparam.pem'
   additional_nginx_directives = vhost['nginx_directives'].to_a.map do |key, value|
     if value.is_a? Array
@@ -57,6 +65,7 @@ yaml_content['vhosts'].each do |vhost|
   nginx_config_content.gsub!('{SSL_CERT_KEY_FILENAME}', ssl_cert_key_filename)
   nginx_config_content.gsub!('{HTTP_PORT}', http_port.to_s)
   nginx_config_content.gsub!('{HTTPS_PORT}', https_port.to_s)
+  nginx_config_content.gsub!('{ADDITIONAL_PORTS}', additional_listen_directives)
 
   headers_to_exclude.each do |header|
     nginx_config_content.gsub!(/add_header #{header} .*/i, '')

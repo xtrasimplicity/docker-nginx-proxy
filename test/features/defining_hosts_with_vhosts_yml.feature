@@ -53,3 +53,23 @@ Feature: Defining virtual hosts with a `vhosts.yml` file
     """
     add_header X-XSS-Protection
     """
+
+  Scenario: Binding a single virtual host to multiple ports
+    Given a file named "/config/vhosts.yml" with:
+    """
+    ---
+    vhosts:
+      - server_name: localhost.127.0.0.1.xip.io
+        proxied_app_url: http://app
+        additional_ports:
+          - 8000
+          - 8001
+    """
+    When I start the proxy server
+    Then the file "/etc/nginx/conf.d/localhost.127.0.0.1.xip.io.conf" should contain the following lines:
+    """
+    listen 8000;
+    listen [::]:8000;
+    listen 8001;
+    listen [::]:8001;
+    """
